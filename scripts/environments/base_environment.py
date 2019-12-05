@@ -14,10 +14,21 @@ from utils.robot import *
 class Environment(object):
 
     def set_robot_pose(self, position, orientation):
-        robot_pose_data = Pose2D()
-        robot_pose_data.x = position[0]
-        robot_pose_data.y = position[1]
-        robot_pose_data.theta = orientation[2]
+        # robot_pose_data = Pose2D()
+        # robot_pose_data.x = position[0]
+        # robot_pose_data.y = position[1]
+        # robot_pose_data.theta = orientation[2]
+
+        robot_pose_data = Pose()
+        quaternion = quaternion_from_euler(orientation[0], orientation[1], orientation[2])
+
+        robot_pose_data.position.x = position[0]
+        robot_pose_data.position.y = position[1]
+        robot_pose_data.position.z = position[2]
+        robot_pose_data.orientation.x = quaternion[0]
+        robot_pose_data.orientation.y = quaternion[1]
+        robot_pose_data.orientation.z = quaternion[2]
+        robot_pose_data.orientation.w = quaternion[3]
         self.pose_publisher.publish(robot_pose_data)
 
     def reset(self):
@@ -145,7 +156,8 @@ class Environment(object):
         self.velocity_publisher = rospy.Publisher('/cmd_vel', Twist, queue_size = 1) ##Set queue size
         rospy.loginfo("Publisher Created: /cmd_vel")
 
-        self.pose_publisher = rospy.Publisher('/cmd_pose', Pose2D, queue_size = 1)
+        #self.pose_publisher = rospy.Publisher('/cmd_pose', Pose2D, queue_size = 1)
+        self.pose_publisher = rospy.Publisher('/cmd_pose', Pose, queue_size=1)
         rospy.loginfo("Publisher Created: /cmd_pose")
 
         ##Added for single laser(stage)

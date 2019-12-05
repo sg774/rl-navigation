@@ -185,6 +185,7 @@ while(epoch <= n_epochs):
         experience_buffer.add_experience(state, action, reward, safety_cost, next_state)
         state = next_state
 
+    #print("epoch: {}".format(epoch))
     if(simulator_flag == False):
         #Compute metrics
         goal_reach_counter += environment.goal_reached
@@ -267,6 +268,7 @@ while(epoch <= n_epochs):
                 pickle.dump(value_estimator.get_weights(), open(os.path.join(weights_path, "weights_critic"+str(epoch)+'.p'), 'wb'))
 
             epoch += 1
+
             epoch_start_time = time.time()
             episodes_this_epoch = 0
             discounted_sum_rewards_counter = 0
